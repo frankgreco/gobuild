@@ -1,3 +1,3 @@
 # gobuild
 
-> http://blog.frankgrecojr.com/gobuild
+> http://blog.frankgrecojr.com/gobuild/

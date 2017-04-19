@@ -4,8 +4,8 @@
 ARG GO_VERSION=1.8.1
 FROM golang:${GO_VERSION}-alpine AS build-stage
 MAINTAINER fbgrecojr@me.com
-WORKDIR /go/src/github.com/frankgreco/go-docker-build/
-COPY ./ /go/src/github.com/frankgreco/go-docker-build/
+WORKDIR /go/src/github.com/frankgreco/gobuild/
+COPY ./ /go/src/github.com/frankgreco/gobuild/
 RUN apk add --update --no-cache \
         wget \
         curl \
@@ -13,11 +13,14 @@ RUN apk add --update --no-cache \
     && wget "https://github.com/Masterminds/glide/releases/download/v0.12.3/glide-v0.12.3-`go env GOHOSTOS`-`go env GOHOSTARCH`.tar.gz" -O /tmp/glide.tar.gz \
     && mkdir /tmp/glide \
     && tar --directory=/tmp/glide -xvf /tmp/glide.tar.gz \
+    && rm -rf /tmp/glide.tar.gz \
     && export PATH=$PATH:/tmp/glide/`go env GOHOSTOS`-`go env GOHOSTARCH` \
     && glide update -v \
     && glide install \
     && CGO_ENABLED=0 GOOS=`go env GOHOSTOS` GOARCH=`go env GOHOSTARCH` go build -o foo \
-    && go test $(go list ./... | grep -v /vendor/)
+    && go test $(go list ./... | grep -v /vendor/) \
+    && apk del wget curl git
+ENTRYPOINT ["/go/src/github.com/frankgreco/gobuild/foo"]
 
 # production stage
 FROM alpine:3.5

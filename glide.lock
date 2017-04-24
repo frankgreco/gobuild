@@ -1,6 +1,14 @@
-hash: 65c15d20760fa011fd76c5cf03ca7b874e6391691bccf63d5e9cf5640bf1ef72
-updated: 2017-04-18T16:18:12.791663703-05:00
-imports: []
+hash: ae94055765b9cf646d29aad328bc6e7bb4023ea2c15ec07be6ea99cdff4fd5e9
+updated: 2017-04-24T10:28:45.289562753-05:00
+imports:
+- name: github.com/opentracing/opentracing-go
+  version: 6edb48674bd9467b8e91fda004f2bd7202d60ce4
+  subpackages:
+  - log
+- name: golang.org/x/net
+  version: e90d6d0afc4c315a0d87a568ae68577cc15149a0
+  subpackages:
+  - context
 testImports:
 - name: github.com/davecgh/go-spew
   version: 6d212800a42e8ab5c146b8ace3490ee17e5225f9

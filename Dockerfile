@@ -17,13 +17,13 @@ RUN apk add --update --no-cache \
     && export PATH=$PATH:/tmp/glide/`go env GOHOSTOS`-`go env GOHOSTARCH` \
     && glide update -v \
     && glide install \
-    && CGO_ENABLED=0 GOOS=`go env GOHOSTOS` GOARCH=`go env GOHOSTARCH` go build -o foo \
+    && CGO_ENABLED=0 GOOS=`go env GOHOSTOS` GOARCH=`go env GOHOSTARCH` go build \
     && go test $(go list ./... | grep -v /vendor/) \
     && apk del wget curl git
-ENTRYPOINT ["/go/src/github.com/frankgreco/gobuild/foo"]
 
 # production stage
 FROM alpine:3.5
 MAINTAINER fbgrecojr@me.com
-COPY --from=build-stage /go/src/github.com/frankgreco/go-docker-build/foo .
-ENTRYPOINT ["/foo"]
+RUN apk --update add ca-certificates
+COPY --from=build-stage /go/src/github.com/frankgreco/gobuild/gobuild .
+ENTRYPOINT ["/gobuild"]
